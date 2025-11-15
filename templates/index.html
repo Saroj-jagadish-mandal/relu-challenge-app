@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shoalhaven DA Tracker</title>
+    <!-- Simple styling to make it look professional -->
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f7f6;
+            color: #333;
+        }
+        .container {
+            max-width: 95%; /* Made wider to accommodate columns */
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+        h1 {
+            color: #102a43;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 10px;
+        }
+        /* This div makes the table scroll horizontally if needed */
+        .table-wrapper {
+            overflow-x: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            font-size: 14px;
+            white-space: nowrap; /* Prevents text from wrapping */
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+        th {
+            background-color: #f9fafb;
+            color: #334e68;
+            font-weight: 600;
+        }
+        tr:nth-child(even) {
+            background-color: #f7f9fb;
+        }
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        /* Make some columns have a minimum width */
+        th:nth-child(3), td:nth-child(3) { min-width: 300px; white-space: normal; } /* Description */
+        th:nth-child(7), td:nth-child(7) { min-width: 250px; white-space: normal; } /* Address */
+        th:nth-child(9), td:nth-child(9) { min-width: 200px; white-space: normal; } /* Progress */
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Shoalhaven DA Tracker (Sept 2025)</h1>
+        <p>Displaying {{ das|length }} scraped applications.</p>
+        
+        <!-- NEW: Added table-wrapper div for horizontal scrolling -->
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <!-- These are all 12 columns from the spec -->
+                        <th>DA Number</th>
+                        <th>Submitted Date</th>
+                        <th>Description</th>
+                        <th>Decision</th>
+                        <th>Categories</th>
+                        <th>Applicant</th>
+                        <th>Property Address</th>
+                        <th>Fees</th>
+                        <th>Progress</th>
+                        <th>Documents</th>
+                        <th>Contact Council</th>
+                        <th>Detail URL</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Use Jinja2 to loop through all the data -->
+                    {% for da in das %}
+                    <tr>
+                        <!-- DA_Number is still a link -->
+                        <td>
+                            <a href="{{ da.Detail_URL }}" target="_blank" rel="noopener noreferrer">
+                                {{ da.DA_Number }}
+                            </a>
+                        </td>
+                        <td>{{ da.Submitted_Date }}</td>
+                        <td>{{ da.Description }}</td>
+                        <td>{{ da.Decision }}</td>
+                        <td>{{ da.Categories }}</td>
+                        <td>{{ da.Applicant }}</td>
+                        <td>{{ da.Property_Address }}</td>
+                        <td>{{ da.Fees }}</td>
+                        <!-- NEW: Added the 4 missing columns -->
+                        <td>{{ da.Progress }}</td>
+                        <td>{{ da.Documents }}</td>
+                        <td>{{ da.Contact_Council }}</td>
+                        <!-- Detail_URL is now its own column -->
+                        <td>
+                            <a href="{{ da.Detail_URL }}" target="_blank" rel="noopener noreferrer">
+                                Link
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div> <!-- End of table-wrapper -->
+    </div>
+</body>
+</html>
